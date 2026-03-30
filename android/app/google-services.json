@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "820892924781",
+    "project_id": "tim-tram-sac",
+    "storage_bucket": "tim-tram-sac.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:820892924781:android:6051ed800ad77955aaf864",
+        "android_client_info": {
+          "package_name": "com.example.tram_sac"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPeFoBYi1tqAxQlyGXszsfADXEEXqYEI4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
