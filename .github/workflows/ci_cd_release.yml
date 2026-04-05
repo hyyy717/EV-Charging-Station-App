@@ -16,7 +16,7 @@ jobs:
     # Toàn bộ các 'steps' bên dưới sẽ được chạy NGẦM BÊN TRONG Docker này.
     # ----------------------------------------------------------------------
     container:
-      image: ghcr.io/cirruslabs/flutter:3.22.0
+      image: ghcr.io/cirruslabs/flutter:stable
 
     # Cấp quyền để tự động tạo bản Release trên GitHub
     permissions:
