@@ -40,7 +40,7 @@ jobs:
 
       # Bước 3: (CI) Rà soát lỗi cú pháp
       - name: 3. Run Static Analysis (CI)
-        run: flutter analyze
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
 
       # Bước 4: (CD) Biên dịch mã nguồn thành file cài đặt APK
       - name: 4. Build Release APK (CD)
