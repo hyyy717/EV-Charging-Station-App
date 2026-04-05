@@ -1,0 +1,55 @@
+name: SEVEN Charging CI/CD with Docker
+
+# Chỉ kích hoạt Pipeline khi bạn push một Tag bắt đầu bằng chữ 'v' (ví dụ: v1.0.0, v1.0.1)
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    # ----------------------------------------------------------------------
+    # ĐÂY LÀ ĐIỂM ĐÁP ỨNG YÊU CẦU DOCKER CỦA BẠN
+    # Khai báo này yêu cầu GitHub Actions khởi động Docker Container.
+    # Toàn bộ các 'steps' bên dưới sẽ được chạy NGẦM BÊN TRONG Docker này.
+    # ----------------------------------------------------------------------
+    container:
+      image: ghcr.io/cirruslabs/flutter:3.19.0
+
+    # Cấp quyền để tự động tạo bản Release trên GitHub
+    permissions:
+      contents: write
+
+    steps:
+      # Bước 1: Kéo mã nguồn của bạn vào bên trong Docker Container
+      - name: 1. Checkout Repository
+        uses: actions/checkout@v4
+
+      # Bổ sung cấu hình quyền an toàn cho Git khi chạy trong Docker
+      - name: Fix Git Directory Permissions
+        run: git config --global --add safe.directory '*'
+
+      # CHÚ Ý: Chúng ta không cần các bước 'setup-java' hay 'setup-flutter' nữa
+      # vì Docker Image ở trên ĐÃ BAO GỒM SẴN tất cả mọi thứ!
+
+      # Bước 2: Tải các thư viện từ pubspec.yaml
+      - name: 2. Install Dependencies (Docker Env)
+        run: flutter pub get
+
+      # Bước 3: (CI) Rà soát lỗi cú pháp
+      - name: 3. Run Static Analysis (CI)
+        run: flutter analyze
+
+      # Bước 4: (CD) Biên dịch mã nguồn thành file cài đặt APK
+      - name: 4. Build Release APK (CD)
+        run: flutter build apk --release
+
+      # Bước 5: Upload file APK vừa tạo lên GitHub Releases
+      - name: 5. Publish to GitHub Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          # Đường dẫn lấy file APK sinh ra từ Docker Container
+          files: build/app/outputs/flutter-apk/app-release.apk
+          generate_release_notes: true
